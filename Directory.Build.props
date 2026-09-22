@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <!-- Central version definition for the entire solution -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <!-- Uncomment below to attach a pre-release suffix (e.g., preview.1, beta, rc1) -->
+    <!-- <VersionSuffix>preview.1</VersionSuffix> -->
+
+    <Authors>DevHrytsan</Authors>
+    <Company>DevHrytsan</Company>
+    <Product>AltPowerPlan</Product>
+    <Copyright>Copyright © 2026 DevHrytsan</Copyright>
+  </PropertyGroup>
+</Project>

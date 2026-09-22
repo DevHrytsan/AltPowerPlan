@@ -1,0 +1,296 @@
+<Page
+    x:Class="AltPowerPlan.Views.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:AltPowerPlan.Helpers"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:local="clr-namespace:AltPowerPlan.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="SettingsPage"
+    d:DataContext="{d:DesignInstance local:SettingsPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="800"
+    d:DesignWidth="800"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="AltPowerPlan"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    ScrollViewer.CanContentScroll="False"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    </Page.Resources>
+
+    <ScrollViewer
+        Margin="0,0,0,16"
+        Focusable="False"
+        HorizontalScrollBarVisibility="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        helpers:ScrollViewerHelper.UseReducedScrollSensitivity="True">
+        <StackPanel Margin="0,0,16,24" HorizontalAlignment="Stretch">
+
+            <!-- General / Appearance Options -->
+            <ui:CardControl Margin="0,0,0,8" Header="{lex:Loc SettingsThemeOption}">
+                <ComboBox
+                    Width="160"
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding ViewModel.ThemeOptions, Mode=OneWay}"
+                    SelectedValue="{Binding ViewModel.SelectedThemeChoice, Mode=TwoWay}"
+                    SelectedValuePath="Value" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8" Header="{lex:Loc SettingsLanguageOption}">
+                <ComboBox
+                    Width="160"
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding ViewModel.LanguageOptions, Mode=OneWay}"
+                    SelectedValue="{Binding ViewModel.SelectedLanguageCode, Mode=TwoWay}"
+                    SelectedValuePath="Value" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8" Header="{lex:Loc SettingsQuickMenuSideOption}">
+                <ComboBox
+                    Width="220"
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding ViewModel.ScreenSideOptions, Mode=OneWay}"
+                    SelectedValue="{Binding ViewModel.SelectedScreenSide, Mode=TwoWay}"
+                    SelectedValuePath="Value" />
+            </ui:CardControl>
+
+            <!-- System & Startup Section -->
+            <TextBlock
+                Margin="0,16,0,8"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="{lex:Loc SettingsSystemSection}" />
+
+            <!-- Start with Windows -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc SettingsStartWithWindowsOption}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc SettingsStartWithWindowsDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    IsChecked="{Binding ViewModel.StartWithWindows, Mode=TwoWay}" />
+            </ui:CardControl>
+
+            <!-- Start Minimized -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc SettingsStartMinimizedOption}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc SettingsStartMinimizedDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    IsChecked="{Binding ViewModel.StartMinimized, Mode=TwoWay}" />
+            </ui:CardControl>
+
+            <!-- Minimize to Tray -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc SettingsMinimizeToTrayOption}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc SettingsMinimizeToTrayDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    IsChecked="{Binding ViewModel.MinimizeToTray, Mode=TwoWay}" />
+            </ui:CardControl>
+
+            <!-- Power Automation Section -->
+            <TextBlock
+                Margin="0,16,0,8"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="{lex:Loc SettingsAutomationSection}" />
+
+            <!-- Auto-switch AC / DC -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc SettingsAutoSwitchAcDcOption}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc SettingsAutoSwitchAcDcDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    IsChecked="{Binding ViewModel.AutoSwitchAcDc, Mode=TwoWay}" />
+            </ui:CardControl>
+
+            <!-- Preferred AC Plan -->
+            <ui:CardControl Margin="0,0,0,8" Header="{lex:Loc SettingsPreferredAcPlanLabel}">
+                <ComboBox
+                    Width="240"
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding ViewModel.AvailablePlans, Mode=OneWay}"
+                    SelectedValue="{Binding ViewModel.SelectedAcPlanGuid, Mode=TwoWay}"
+                    SelectedValuePath="Id" />
+            </ui:CardControl>
+
+            <!-- Preferred Battery (DC) Plan -->
+            <ui:CardControl Margin="0,0,0,8" Header="{lex:Loc SettingsPreferredDcPlanLabel}">
+                <ComboBox
+                    Width="240"
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding ViewModel.AvailablePlans, Mode=OneWay}"
+                    SelectedValue="{Binding ViewModel.SelectedDcPlanGuid, Mode=TwoWay}"
+                    SelectedValuePath="Id" />
+            </ui:CardControl>
+
+            <!-- Power Plans Section -->
+            <TextBlock
+                Margin="0,16,0,8"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="{lex:Loc SettingsPowerPlansSection}" />
+
+            <!-- Confirm Plan Deletion -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc SettingsConfirmPlanDeletionOption}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc SettingsConfirmPlanDeletionDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    IsChecked="{Binding ViewModel.ConfirmPlanDeletion, Mode=TwoWay}" />
+            </ui:CardControl>
+
+            <!-- Restore Default Schemes -->
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock
+                            FontWeight="SemiBold"
+                            Text="{lex:Loc DashboardRestoreDefaultsButton}" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{lex:Loc DashboardDefaultsRestoredMessage}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:Button
+                    Appearance="Secondary"
+                    Command="{Binding ViewModel.RestoreDefaultSchemesCommand}"
+                    Icon="{ui:SymbolIcon ArrowClockwise24}"
+                    Content="{lex:Loc DashboardRestoreDefaultsButton}" />
+            </ui:CardControl>
+
+            <!-- Shortcuts Section -->
+            <TextBlock
+                Margin="0,16,0,8"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="{lex:Loc SettingsShortcutsSection}" />
+
+            <Border
+                Margin="0,0,0,8"
+                Padding="16,14"
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="4">
+                <StackPanel>
+                    <TextBlock
+                        FontWeight="SemiBold"
+                        Text="{lex:Loc SettingsHotkeyOption}" />
+                    <TextBlock
+                        Margin="0,2,0,0"
+                        FontSize="12"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{lex:Loc SettingsHotkeyDescription}" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        FontSize="12"
+                        Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                        Text="{Binding ViewModel.HotkeyErrorMessage, Mode=OneWay}"
+                        Visibility="{Binding ViewModel.HotkeyErrorVisibility, Mode=OneWay}" />
+
+                    <WrapPanel Margin="0,12,0,0">
+                        <!-- Record / Custom Hotkey Button -->
+                        <ui:Button
+                            x:Name="HotkeyRecordButton"
+                            Margin="0,0,8,6"
+                            MinWidth="140"
+                            Padding="12,6"
+                            Click="OnHotkeyRecordButtonClicked"
+                            LostFocus="OnHotkeyRecordLostFocus"
+                            PreviewKeyDown="OnHotkeyRecordPreviewKeyDown"
+                            ToolTip="{lex:Loc SettingsHotkeyDescription}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon
+                                    Margin="0,0,8,0"
+                                    FontSize="16"
+                                    Symbol="{Binding ViewModel.HotkeyButtonIcon, Mode=OneWay}" />
+                                <TextBlock
+                                    FontWeight="Medium"
+                                    Text="{Binding ViewModel.HotkeyDisplayText, Mode=OneWay}" />
+                            </StackPanel>
+                        </ui:Button>
+
+                        <!-- Quick Presets ComboBox -->
+                        <ComboBox
+                            Width="150"
+                            Margin="0,0,8,6"
+                            DisplayMemberPath="DisplayName"
+                            ItemsSource="{Binding ViewModel.HotkeyPresets, Mode=OneWay}"
+                            SelectedValue="{Binding ViewModel.SelectedPreset, Mode=TwoWay}"
+                            SelectedValuePath="Value" />
+
+                        <!-- Clear / Disable Button -->
+                        <ui:Button
+                            Margin="0,0,4,6"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.ClearHotkeyCommand}"
+                            Content="{lex:Loc SettingsHotkeyClear}" />
+
+                        <!-- Reset to Default Button -->
+                        <ui:Button
+                            Margin="0,0,0,6"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.ResetHotkeyCommand}"
+                            Content="{lex:Loc SettingsHotkeyReset}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

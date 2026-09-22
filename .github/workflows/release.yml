@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: false
+        type: string
+      prerelease:
+        description: 'Mark as prerelease'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline-release:
+    name: ModularPipeline Multi-Arch Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', 'AltPowerPlan.slnx') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --no-progress
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch' -and '${{ inputs.version }}' -ne '') {
+            $ver = '${{ inputs.version }}'
+            if (-not $ver.StartsWith('v')) { $tag = "v$ver" } else { $tag = $ver; $ver = $ver.Substring(1) }
+          } elseif ('${{ github.ref_name }}' -like 'v*') {
+            $tag = '${{ github.ref_name }}'
+            $ver = $tag.Substring(1)
+          } else {
+            [xml]$props = Get-Content Directory.Build.props
+            $ver = $props.Project.PropertyGroup.VersionPrefix
+            if ($props.Project.PropertyGroup.VersionSuffix) {
+              $ver = "$ver-$($props.Project.PropertyGroup.VersionSuffix)"
+            }
+            $tag = "v$ver"
+          }
+          Write-Host "Target Tag: $tag, Version: $ver"
+          "TAG=$tag" >> $env:GITHUB_OUTPUT
+          "VERSION=$ver" >> $env:GITHUB_OUTPUT
+
+      - name: Execute ModularPipeline (Restore, Test, Multi-Arch Publish, Inno Setup, ZIP & Checksums)
+        shell: pwsh
+        run: |
+          $ver = '${{ steps.version.outputs.VERSION }}'
+          dotnet run --project AltPowerPlan.Pipeline -- --configuration Release --version $ver --clean
+
+      - name: Display Checksums
+        shell: pwsh
+        run: |
+          Get-Content ./Build/SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.TAG }}
+          name: AltPowerPlan ${{ steps.version.outputs.TAG }}
+          generate_release_notes: true
+          prerelease: ${{ inputs.prerelease || contains(steps.version.outputs.TAG, '-') }}
+          files: |
+            ./Build/*.zip
+            ./Build/*.exe
+            ./Build/SHA256SUMS.txt
+
+

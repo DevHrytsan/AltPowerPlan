@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AltPowerPlan.App/AltPowerPlan.App.csproj" />
+  <Project Path="AltPowerPlan.Tests/AltPowerPlan.Tests.csproj" />
+  <Project Path="AltPowerPlan.Pipeline/AltPowerPlan.Pipeline.csproj" />
+</Solution>

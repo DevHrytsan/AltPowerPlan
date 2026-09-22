@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsThemeOption" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="SettingsThemeDarkOption" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="SettingsThemeLightOption" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="SettingsThemeSystemOption" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SettingsLanguageOption" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="MenuHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="AboutLeadAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="AboutRoleContributor" xml:space="preserve">
+    <value>Contributor</value>
+  </data>
+  <data name="AboutCollaboratorsTitle" xml:space="preserve">
+    <value>Collaborators &amp; Contributors</value>
+  </data>
+  <data name="AboutCollaboratorsSubtitle" xml:space="preserve">
+    <value>People who contributed code, design, or ideas to AltPowerPlan</value>
+  </data>
+  <data name="AboutCollaboratorsLoading" xml:space="preserve">
+    <value>Loading contributors...</value>
+  </data>
+  <data name="AboutCollaboratorsEmpty" xml:space="preserve">
+    <value>No additional contributors yet. Want to help? Submit a pull request!</value>
+  </data>
+  <data name="AboutCollaboratorsContributeButton" xml:space="preserve">
+    <value>Contribute on GitHub</value>
+  </data>
+  <data name="AboutCollaboratorsRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="AboutViewProfile" xml:space="preserve">
+    <value>GitHub Profile</value>
+  </data>
+  <data name="AboutContributionsCount" xml:space="preserve">
+    <value>{0} contributions</value>
+  </data>
+  <data name="AboutAppDescription" xml:space="preserve">
+    <value>A lightweight, modern Windows utility for effortless power plan management and switching.</value>
+  </data>
+  <data name="AboutLinksRepo" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="AboutLinksIssues" xml:space="preserve">
+    <value>Issues</value>
+  </data>
+  <data name="AboutLinksReport" xml:space="preserve">
+    <value>Report a bug or suggestion</value>
+  </data>
+  <data name="DashboardTitle" xml:space="preserve">
+    <value>Power Plans</value>
+  </data>
+  <data name="DashboardSubtitle" xml:space="preserve">
+    <value>Select and switch your active Windows power scheme</value>
+  </data>
+  <data name="DashboardActivePlanHeader" xml:space="preserve">
+    <value>Current Active Plan</value>
+  </data>
+  <data name="DashboardAvailablePlansHeader" xml:space="preserve">
+    <value>Available Power Plans</value>
+  </data>
+  <data name="DashboardActivateButton" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="DashboardActiveStatus" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="DashboardRefreshButton" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="DashboardPlanActivated" xml:space="preserve">
+    <value>Power plan activated</value>
+  </data>
+  <data name="DashboardAddPlanButton" xml:space="preserve">
+    <value>New Plan</value>
+  </data>
+  <data name="DashboardWindowsOptionsButton" xml:space="preserve">
+    <value>Windows Power Options</value>
+  </data>
+  <data name="DashboardWindowsOptionsTooltip" xml:space="preserve">
+    <value>Open Windows Control Panel Power Options</value>
+  </data>
+  <data name="DashboardOpenWindowsEdit" xml:space="preserve">
+    <value>Edit in Windows Settings</value>
+  </data>
+  <data name="DashboardEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="DashboardDeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DashboardDeleteDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete the currently active plan</value>
+  </data>
+  <data name="DashboardCreatePlanTitle" xml:space="preserve">
+    <value>Create Power Plan</value>
+  </data>
+  <data name="DashboardEditPlanTitle" xml:space="preserve">
+    <value>Edit Power Plan</value>
+  </data>
+  <data name="DashboardDeletePlanTitle" xml:space="preserve">
+    <value>Delete Power Plan</value>
+  </data>
+  <data name="DashboardDeletePlanMessage" xml:space="preserve">
+    <value>Are you sure you want to delete '{0}'? This plan will be permanently removed.</value>
+  </data>
+  <data name="DashboardBaseTemplateLabel" xml:space="preserve">
+    <value>Base Scheme Template</value>
+  </data>
+  <data name="DashboardPlanNameLabel" xml:space="preserve">
+    <value>Plan Name</value>
+  </data>
+  <data name="DashboardPlanNamePlaceholder" xml:space="preserve">
+    <value>Enter plan name...</value>
+  </data>
+  <data name="DashboardPlanDescriptionLabel" xml:space="preserve">
+    <value>Description (optional)</value>
+  </data>
+  <data name="DashboardPlanDescriptionPlaceholder" xml:space="preserve">
+    <value>Enter description...</value>
+  </data>
+  <data name="DashboardCreateButton" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="DashboardSaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="DashboardCancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DashboardPlanCreated" xml:space="preserve">
+    <value>Power plan created successfully</value>
+  </data>
+  <data name="DashboardPlanUpdated" xml:space="preserve">
+    <value>Power plan updated successfully</value>
+  </data>
+  <data name="DashboardPlanDeleted" xml:space="preserve">
+    <value>Power plan deleted successfully</value>
+  </data>
+  <data name="DashboardPlanCreateFailed" xml:space="preserve">
+    <value>Failed to create power plan</value>
+  </data>
+  <data name="DashboardPlanDeleteFailed" xml:space="preserve">
+    <value>Failed to delete power plan</value>
+  </data>
+  <data name="DashboardPlanUpdateFailed" xml:space="preserve">
+    <value>Failed to update power plan</value>
+  </data>
+  <data name="DashboardPlanNameRequired" xml:space="preserve">
+    <value>Plan name is required</value>
+  </data>
+  <data name="TrayActivePlanFormat" xml:space="preserve">
+    <value>Active: {0}</value>
+  </data>
+  <data name="TrayOpenWindow" xml:space="preserve">
+    <value>Open AltPowerPlan</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="SettingsQuickMenuSideOption" xml:space="preserve">
+    <value>Quick Menu Screen Position</value>
+  </data>
+  <data name="SettingsScreenSideBottomRight" xml:space="preserve">
+    <value>Bottom Right (Taskbar Corner)</value>
+  </data>
+  <data name="SettingsScreenSideBottomLeft" xml:space="preserve">
+    <value>Bottom Left</value>
+  </data>
+  <data name="SettingsScreenSideTopRight" xml:space="preserve">
+    <value>Top Right</value>
+  </data>
+  <data name="SettingsScreenSideTopLeft" xml:space="preserve">
+    <value>Top Left</value>
+  </data>
+  <data name="SettingsScreenSideBottomCenter" xml:space="preserve">
+    <value>Bottom Center</value>
+  </data>
+  <data name="SettingsScreenSideTopCenter" xml:space="preserve">
+    <value>Top Center</value>
+  </data>
+  <data name="SettingsHotkeyOption" xml:space="preserve">
+    <value>Global Hotkey for Quick Menu</value>
+  </data>
+  <data name="SettingsHotkeyCtrlAltP" xml:space="preserve">
+    <value>Ctrl + Alt + P</value>
+  </data>
+  <data name="SettingsHotkeyAltShiftP" xml:space="preserve">
+    <value>Alt + Shift + P</value>
+  </data>
+  <data name="SettingsHotkeyWinAltP" xml:space="preserve">
+    <value>Win + Alt + P</value>
+  </data>
+  <data name="SettingsHotkeyCtrlShiftP" xml:space="preserve">
+    <value>Ctrl + Shift + P</value>
+  </data>
+  <data name="SettingsHotkeyNone" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="SettingsHotkeyDescription" xml:space="preserve">
+    <value>Press the shortcut anywhere to toggle the quick menu. Click the button to record any custom hotkey.</value>
+  </data>
+  <data name="SettingsHotkeyPressKeys" xml:space="preserve">
+    <value>Press keys...</value>
+  </data>
+  <data name="SettingsHotkeyCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="SettingsHotkeyClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="SettingsHotkeyReset" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="SettingsHotkeyInUse" xml:space="preserve">
+    <value>This hotkey is already in use by another application or Windows.</value>
+  </data>
+  <data name="SettingsHotkeyNeedModifier" xml:space="preserve">
+    <value>Please use at least one modifier key (Ctrl, Alt, Shift, Win) or a function key (F1-F24).</value>
+  </data>
+  <data name="TrayQuickMenuTitle" xml:space="preserve">
+    <value>Power Mode</value>
+  </data>
+  <data name="DashboardDoNotAskAgain" xml:space="preserve">
+    <value>Don't ask me again</value>
+  </data>
+  <data name="SettingsConfirmPlanDeletionOption" xml:space="preserve">
+    <value>Confirm Plan Deletion</value>
+  </data>
+  <data name="SettingsConfirmPlanDeletionDescription" xml:space="preserve">
+    <value>Ask for confirmation before deleting a power plan</value>
+  </data>
+  <data name="DashboardDeleteActivePlanError" xml:space="preserve">
+    <value>Cannot delete the active power plan. Please activate another plan first.</value>
+  </data>
+  <data name="TrayDeletePlanMenu" xml:space="preserve">
+    <value>Delete Plan</value>
+  </data>
+  <data name="TrayNoDeletablePlans" xml:space="preserve">
+    <value>Active plan cannot be deleted</value>
+  </data>
+  <data name="DashboardPresetHeader" xml:space="preserve">
+    <value>Choose a Preset or Custom Plan</value>
+  </data>
+  <data name="DashboardPresetUltimate" xml:space="preserve">
+    <value>Ultimate Performance</value>
+  </data>
+  <data name="DashboardPresetUltimateDesc" xml:space="preserve">
+    <value>Provides ultimate performance on higher-end PCs.</value>
+  </data>
+  <data name="DashboardPresetHigh" xml:space="preserve">
+    <value>High Performance</value>
+  </data>
+  <data name="DashboardPresetHighDesc" xml:space="preserve">
+    <value>Favors performance, but may use more energy.</value>
+  </data>
+  <data name="DashboardPresetBalanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="DashboardPresetBalancedDesc" xml:space="preserve">
+    <value>Automatically balances performance with energy consumption on capable hardware.</value>
+  </data>
+  <data name="DashboardPresetSaver" xml:space="preserve">
+    <value>Power Saver</value>
+  </data>
+  <data name="DashboardPresetSaverDesc" xml:space="preserve">
+    <value>Saves energy by reducing computer performance where possible.</value>
+  </data>
+  <data name="DashboardPresetCustom" xml:space="preserve">
+    <value>Custom Plan</value>
+  </data>
+  <data name="DashboardPresetCustomDesc" xml:space="preserve">
+    <value>Duplicate from any existing power plan on your system.</value>
+  </data>
+  <data name="DashboardImportPlanButton" xml:space="preserve">
+    <value>Import Plan</value>
+  </data>
+  <data name="DashboardDuplicateButton" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="DashboardExportButton" xml:space="preserve">
+    <value>Export (.pow)</value>
+  </data>
+  <data name="DashboardRestoreDefaultsButton" xml:space="preserve">
+    <value>Restore Defaults</value>
+  </data>
+  <data name="DashboardPlanDuplicatedTitle" xml:space="preserve">
+    <value>Power plan duplicated</value>
+  </data>
+  <data name="DashboardPlanExportedTitle" xml:space="preserve">
+    <value>Power plan exported</value>
+  </data>
+  <data name="DashboardPlanExportFailedTitle" xml:space="preserve">
+    <value>Failed to export power plan</value>
+  </data>
+  <data name="DashboardPlanImportedTitle" xml:space="preserve">
+    <value>Power plan imported</value>
+  </data>
+  <data name="DashboardPlanImportFailedTitle" xml:space="preserve">
+    <value>Failed to import power plan</value>
+  </data>
+  <data name="DashboardDefaultsRestoredTitle" xml:space="preserve">
+    <value>Default schemes restored</value>
+  </data>
+  <data name="DashboardDefaultsRestoredMessage" xml:space="preserve">
+    <value>Windows built-in power schemes have been restored.</value>
+  </data>
+  <data name="SettingsStartWithWindowsOption" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="SettingsStartWithWindowsDescription" xml:space="preserve">
+    <value>Automatically launch AltPowerPlan on system startup</value>
+  </data>
+  <data name="SettingsStartMinimizedOption" xml:space="preserve">
+    <value>Start Minimized</value>
+  </data>
+  <data name="SettingsStartMinimizedDescription" xml:space="preserve">
+    <value>Start silently minimized to system tray</value>
+  </data>
+  <data name="SettingsMinimizeToTrayOption" xml:space="preserve">
+    <value>Minimize to Tray</value>
+  </data>
+  <data name="SettingsMinimizeToTrayDescription" xml:space="preserve">
+    <value>Hide window to system tray instead of taskbar when minimizing</value>
+  </data>
+  <data name="SettingsAutoSwitchAcDcOption" xml:space="preserve">
+    <value>Auto-switch on AC / Battery</value>
+  </data>
+  <data name="SettingsAutoSwitchAcDcDescription" xml:space="preserve">
+    <value>Automatically switch power plans when plugging in or running on battery</value>
+  </data>
+  <data name="SettingsPreferredAcPlanLabel" xml:space="preserve">
+    <value>Plugged in (AC):</value>
+  </data>
+  <data name="SettingsPreferredDcPlanLabel" xml:space="preserve">
+    <value>On battery (DC):</value>
+  </data>
+  <data name="SettingsSystemSection" xml:space="preserve">
+    <value>System &amp; Startup</value>
+  </data>
+  <data name="SettingsAutomationSection" xml:space="preserve">
+    <value>Power Automation</value>
+  </data>
+  <data name="SettingsPowerPlansSection" xml:space="preserve">
+    <value>Power Plans</value>
+  </data>
+  <data name="SettingsShortcutsSection" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="AboutCheckForUpdates" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="AboutUpdateAvailable" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="AboutUpToDate" xml:space="preserve">
+    <value>You are up to date</value>
+  </data>
+</root>

@@ -1,0 +1,790 @@
+<Page
+    x:Class="AltPowerPlan.Views.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:AltPowerPlan.Helpers"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:local="clr-namespace:AltPowerPlan.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:AltPowerPlan.Models"
+    xmlns:res="clr-namespace:AltPowerPlan.Resources.Translation"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="DashboardPage"
+    d:DataContext="{d:DesignInstance local:DashboardPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="750"
+    d:DesignWidth="850"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="AltPowerPlan"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    ScrollViewer.CanContentScroll="False"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <helpers:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+
+        <Style x:Key="PlanCardControlStyle" TargetType="ui:CardControl" BasedOn="{StaticResource {x:Type ui:CardControl}}">
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                    <Setter Property="BorderThickness" Value="1.5" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActivateButtonStyle" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Visibility" Value="Visible" />
+            <Setter Property="ToolTip" Value="{lex:Loc DashboardActivateButton}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="ButtonBorder"
+                            Background="{DynamicResource AccentFillColorSubtleBrush}"
+                            BorderBrush="{DynamicResource AccentFillColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="7,5"
+                            SnapsToDevicePixels="True">
+                            <ui:SymbolIcon
+                                x:Name="ButtonIcon"
+                                FontSize="16"
+                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                Symbol="Power24" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                <Setter TargetName="ButtonIcon" Property="ui:SymbolIcon.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource AccentFillColorTertiaryBrush}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource AccentFillColorTertiaryBrush}" />
+                                <Setter TargetName="ButtonIcon" Property="ui:SymbolIcon.Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActiveBadgeStyle" TargetType="Border">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="ui:Button">
+            <Setter Property="Visibility" Value="Visible" />
+            <Setter Property="ToolTip" Value="{lex:Loc DashboardDeleteButton}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <!-- Main Dashboard Scrollable Content -->
+        <ScrollViewer
+            Margin="0,0,0,16"
+            Focusable="False"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto"
+            helpers:ScrollViewerHelper.UseReducedScrollSensitivity="True">
+            <StackPanel Margin="0,0,16,0" HorizontalAlignment="Stretch">
+
+                <!-- Top Header with Title and Action Buttons -->
+                <StackPanel Margin="0,0,0,24">
+                    <TextBlock
+                        FontSize="28"
+                        FontWeight="SemiBold"
+                        TextTrimming="CharacterEllipsis"
+                        Text="{lex:Loc DashboardTitle}" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        FontSize="14"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        TextWrapping="Wrap"
+                        Text="{lex:Loc DashboardSubtitle}" />
+
+                    <!-- Header Action Buttons -->
+                    <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                        <!-- Add Plan Button -->
+                        <ui:Button
+                            Margin="0,0,8,0"
+                            Appearance="Primary"
+                            Command="{Binding ViewModel.OpenCreateDialogCommand}"
+                            Icon="{ui:SymbolIcon Add24}"
+                            Content="{lex:Loc DashboardAddPlanButton}" />
+
+                        <!-- Import Plan Button -->
+                        <ui:Button
+                            Margin="0,0,8,0"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.ImportPlanCommand}"
+                            Icon="{ui:SymbolIcon ArrowUpload24}"
+                            Content="{lex:Loc DashboardImportPlanButton}" />
+
+                        <!-- Windows Power Options Button -->
+                        <ui:Button
+                            Margin="0,0,8,0"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.OpenWindowsPowerOptionsCommand}"
+                            Icon="{ui:SymbolIcon Open24}"
+                            ToolTip="{lex:Loc DashboardWindowsOptionsTooltip}" />
+
+                        <!-- Refresh Button -->
+                        <ui:Button
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.LoadPlansCommand, Mode=OneWay}"
+                            Icon="{ui:SymbolIcon ArrowClockwise24}"
+                            ToolTip="{lex:Loc DashboardRefreshButton}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Active Plan Spotlight Card -->
+                <ui:CardControl Margin="0,0,0,28" Padding="18,16">
+                    <ui:CardControl.ContextMenu>
+                        <ContextMenu Opened="OnContextMenuOpened">
+                            <MenuItem
+                                Tag="DashboardDuplicateButton"
+                                Header="{x:Static res:Strings.DashboardDuplicateButton}"
+                                Click="OnContextDuplicateClicked">
+                                <MenuItem.Icon>
+                                    <ui:SymbolIcon Symbol="Copy24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Tag="DashboardExportButton"
+                                Header="{x:Static res:Strings.DashboardExportButton}"
+                                Click="OnContextExportClicked">
+                                <MenuItem.Icon>
+                                    <ui:SymbolIcon Symbol="ArrowDownload24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Tag="DashboardEditButton"
+                                Header="{x:Static res:Strings.DashboardEditButton}"
+                                Click="OnContextEditClicked">
+                                <MenuItem.Icon>
+                                    <ui:SymbolIcon Symbol="Edit24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ui:CardControl.ContextMenu>
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Grid.Column="0"
+                                Width="52"
+                                Height="52"
+                                Margin="0,0,16,0"
+                                Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                CornerRadius="8">
+                                <ui:SymbolIcon
+                                    FontSize="28"
+                                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                    Symbol="{Binding ViewModel.ActivePlan.Icon, FallbackValue=LeafTwo24}" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <TextBlock
+                                    FontSize="12"
+                                    FontWeight="Medium"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    Text="{lex:Loc DashboardActivePlanHeader}" />
+                                <TextBlock
+                                    Margin="0,2,0,0"
+                                    FontSize="20"
+                                    FontWeight="SemiBold"
+                                    TextTrimming="CharacterEllipsis"
+                                    Text="{Binding ViewModel.ActivePlan.Name, FallbackValue='Balanced'}" />
+                                <TextBlock
+                                    Margin="0,4,0,0"
+                                    FontSize="13"
+                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding ViewModel.ActivePlan.Description, FallbackValue=''}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+
+                            <!-- Active Plan Actions -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Duplicate Active Plan Button -->
+                                <ui:Button
+                                    Margin="0,0,6,0"
+                                    Appearance="Secondary"
+                                    Command="{Binding ViewModel.DuplicatePlanCommand}"
+                                    CommandParameter="{Binding ViewModel.ActivePlan}"
+                                    Icon="{ui:SymbolIcon Copy24}"
+                                    ToolTip="{lex:Loc DashboardDuplicateButton}" />
+
+                                <!-- Export Active Plan Button -->
+                                <ui:Button
+                                    Margin="0,0,6,0"
+                                    Appearance="Secondary"
+                                    Command="{Binding ViewModel.ExportPlanCommand}"
+                                    CommandParameter="{Binding ViewModel.ActivePlan}"
+                                    Icon="{ui:SymbolIcon ArrowDownload24}"
+                                    ToolTip="{lex:Loc DashboardExportButton}" />
+
+                                <!-- Edit Active Plan Button -->
+                                <ui:Button
+                                    Appearance="Secondary"
+                                    Command="{Binding ViewModel.OpenEditDialogCommand}"
+                                    CommandParameter="{Binding ViewModel.ActivePlan}"
+                                    Icon="{ui:SymbolIcon Edit24}"
+                                    ToolTip="{lex:Loc DashboardEditButton}" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
+
+                <!-- Available Plans Section Header -->
+                <TextBlock
+                    Margin="0,0,0,12"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Text="{lex:Loc DashboardAvailablePlansHeader}" />
+
+                <!-- Power Plans List -->
+                <ItemsControl ItemsSource="{Binding ViewModel.PowerPlans}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:PowerPlanModel}">
+                            <ui:CardControl
+                                Style="{StaticResource PlanCardControlStyle}"
+                                MouseDoubleClick="OnPlanCardDoubleClick">
+                                <ui:CardControl.ContextMenu>
+                                    <ContextMenu Opened="OnContextMenuOpened">
+                                        <MenuItem
+                                            Tag="DashboardActivateButton"
+                                            Header="{x:Static res:Strings.DashboardActivateButton}"
+                                            Click="OnContextActivateClicked">
+                                            <MenuItem.Icon>
+                                                <ui:SymbolIcon Symbol="Checkmark24" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            Tag="DashboardDuplicateButton"
+                                            Header="{x:Static res:Strings.DashboardDuplicateButton}"
+                                            Click="OnContextDuplicateClicked">
+                                            <MenuItem.Icon>
+                                                <ui:SymbolIcon Symbol="Copy24" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            Tag="DashboardExportButton"
+                                            Header="{x:Static res:Strings.DashboardExportButton}"
+                                            Click="OnContextExportClicked">
+                                            <MenuItem.Icon>
+                                                <ui:SymbolIcon Symbol="ArrowDownload24" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem
+                                            Tag="DashboardEditButton"
+                                            Header="{x:Static res:Strings.DashboardEditButton}"
+                                            Click="OnContextEditClicked">
+                                            <MenuItem.Icon>
+                                                <ui:SymbolIcon Symbol="Edit24" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <Separator>
+                                            <Separator.Style>
+                                                <Style TargetType="Separator">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Separator.Style>
+                                        </Separator>
+                                        <MenuItem
+                                            Tag="DashboardDeleteButton"
+                                            Header="{x:Static res:Strings.DashboardDeleteButton}"
+                                            Click="OnContextDeleteClicked">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                            <MenuItem.Icon>
+                                                <ui:SymbolIcon Symbol="Delete24" Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </ui:CardControl.ContextMenu>
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Plan Icon -->
+                                        <Border
+                                            Grid.Column="0"
+                                            Width="40"
+                                            Height="40"
+                                            Margin="0,0,16,0"
+                                            VerticalAlignment="Center"
+                                            Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                            CornerRadius="8">
+                                            <ui:SymbolIcon
+                                                FontSize="20"
+                                                Symbol="{Binding Icon}" />
+                                        </Border>
+
+                                        <!-- Plan Details -->
+                                        <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="15"
+                                                FontWeight="SemiBold"
+                                                TextTrimming="CharacterEllipsis"
+                                                Text="{Binding Name}" />
+                                            <TextBlock
+                                                Margin="0,2,0,0"
+                                                FontSize="12"
+                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                Text="{Binding Description}"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+
+                                        <!-- Action Buttons & Status -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <!-- Active Badge -->
+                                            <Border
+                                                Margin="0,0,8,0"
+                                                VerticalAlignment="Center"
+                                                Background="{DynamicResource AccentFillColorSubtleBrush}"
+                                                BorderBrush="{DynamicResource AccentFillColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="6"
+                                                Padding="10,4"
+                                                Style="{StaticResource ActiveBadgeStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ui:SymbolIcon
+                                                        Margin="0,0,6,0"
+                                                        FontSize="14"
+                                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                        Symbol="Checkmark24" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        FontWeight="SemiBold"
+                                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="{lex:Loc DashboardActiveStatus}" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Activate Button -->
+                                            <Button
+                                                Margin="0,0,6,0"
+                                                VerticalAlignment="Center"
+                                                Command="{Binding DataContext.ViewModel.ActivatePlanCommand, RelativeSource={RelativeSource AncestorType=local:DashboardPage}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource ActivateButtonStyle}" />
+
+                                            <!-- Duplicate Button -->
+                                            <ui:Button
+                                                Margin="0,0,6,0"
+                                                VerticalAlignment="Center"
+                                                Appearance="Secondary"
+                                                Command="{Binding DataContext.ViewModel.DuplicatePlanCommand, RelativeSource={RelativeSource AncestorType=local:DashboardPage}}"
+                                                CommandParameter="{Binding}"
+                                                Icon="{ui:SymbolIcon Copy24}"
+                                                ToolTip="{lex:Loc DashboardDuplicateButton}" />
+
+                                            <!-- Edit Plan Button -->
+                                            <ui:Button
+                                                Margin="0,0,6,0"
+                                                VerticalAlignment="Center"
+                                                Appearance="Secondary"
+                                                Command="{Binding DataContext.ViewModel.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=local:DashboardPage}}"
+                                                CommandParameter="{Binding}"
+                                                Icon="{ui:SymbolIcon Edit24}"
+                                                ToolTip="{lex:Loc DashboardEditButton}" />
+
+                                            <!-- Delete Plan Button -->
+                                            <ui:Button
+                                                VerticalAlignment="Center"
+                                                Appearance="Secondary"
+                                                Command="{Binding DataContext.ViewModel.OpenDeleteDialogCommand, RelativeSource={RelativeSource AncestorType=local:DashboardPage}}"
+                                                CommandParameter="{Binding}"
+                                                Icon="{ui:SymbolIcon Delete24}"
+                                                Style="{StaticResource DeleteButtonStyle}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Modal Dialog Overlay for Add / Edit / Delete -->
+        <Grid
+            Visibility="{Binding ViewModel.IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Background="#99000000"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+
+            <!-- Dialog Backdrop Click to dismiss -->
+            <Border Background="Transparent" MouseDown="OnDialogBackdropMouseDown" />
+
+            <!-- Centered Dialog Card -->
+            <Border
+                MaxWidth="480"
+                Margin="24,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Background="{DynamicResource ApplicationBackgroundBrush}"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="24">
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="32"
+                        Direction="270"
+                        Opacity="0.5"
+                        ShadowDepth="6" />
+                </Border.Effect>
+
+                <StackPanel>
+                    <!-- Dialog Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            FontSize="20"
+                            FontWeight="SemiBold"
+                            Text="{Binding ViewModel.DialogTitle}" />
+
+                        <ui:Button
+                            Grid.Column="1"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.CloseDialogCommand}"
+                            Icon="{ui:SymbolIcon Dismiss24}" />
+                    </Grid>
+
+                    <!-- Create Plan Dialog Content -->
+                    <StackPanel Visibility="{Binding ViewModel.IsCreateDialog, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <!-- Preset Selection Header -->
+                        <TextBlock
+                            Margin="0,0,0,8"
+                            FontWeight="Medium"
+                            Text="{lex:Loc DashboardPresetHeader}" />
+
+                        <!-- Preset Selection (Horizontal wrap chips) -->
+                        <ListBox
+                            Margin="0,0,0,16"
+                            ItemsSource="{Binding ViewModel.Presets}"
+                            SelectedItem="{Binding ViewModel.SelectedPreset}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Margin" Value="0,0,8,8" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border
+                                                    x:Name="PresetBorder"
+                                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="12,8"
+                                                    Cursor="Hand">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <ui:SymbolIcon
+                                                            x:Name="PresetIcon"
+                                                            Margin="0,0,8,0"
+                                                            FontSize="16"
+                                                            Symbol="{Binding Icon}"
+                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                        <TextBlock
+                                                            x:Name="PresetTitle"
+                                                            FontSize="13"
+                                                            FontWeight="Medium"
+                                                            Text="{Binding Title}" />
+                                                    </StackPanel>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="PresetBorder" Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="PresetBorder" Property="Background" Value="{DynamicResource AccentFillColorSubtleBrush}" />
+                                                        <Setter TargetName="PresetBorder" Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                                        <Setter TargetName="PresetIcon" Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                                        <Setter TargetName="PresetTitle" Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+
+                        <!-- Base Template Selector (Shown only when Custom Plan is selected) -->
+                        <StackPanel Visibility="{Binding ViewModel.IsCustomPresetSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock
+                                Margin="0,0,0,6"
+                                FontWeight="Medium"
+                                Text="{lex:Loc DashboardBaseTemplateLabel}" />
+                            <ComboBox
+                                Margin="0,0,0,16"
+                                DisplayMemberPath="Name"
+                                ItemsSource="{Binding ViewModel.AvailableBasePlans}"
+                                SelectedItem="{Binding ViewModel.SelectedBasePlan}" />
+                        </StackPanel>
+
+                        <!-- Plan Name -->
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontWeight="Medium"
+                            Text="{lex:Loc DashboardPlanNameLabel}" />
+                        <TextBox
+                            x:Name="CreatePlanNameTextBox"
+                            Margin="0,0,0,16"
+                            Text="{Binding ViewModel.NewPlanName, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <!-- Plan Description -->
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontWeight="Medium"
+                            Text="{lex:Loc DashboardPlanDescriptionLabel}" />
+                        <TextBox
+                            Margin="0,0,0,16"
+                            Height="64"
+                            AcceptsReturn="True"
+                            Text="{Binding ViewModel.NewPlanDescription, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" />
+
+                        <!-- Error Message -->
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="12"
+                            Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                            Text="{Binding ViewModel.CreateErrorMessage}"
+                            Visibility="{Binding ViewModel.HasCreateError, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <ui:Button
+                                Margin="0,0,8,0"
+                                Appearance="Secondary"
+                                Command="{Binding ViewModel.CloseDialogCommand}"
+                                Content="{lex:Loc DashboardCancelButton}" />
+                            <ui:Button
+                                Appearance="Primary"
+                                Command="{Binding ViewModel.SubmitCreatePlanCommand}"
+                                Content="{lex:Loc DashboardCreateButton}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Edit Plan Dialog Content -->
+                    <StackPanel Visibility="{Binding ViewModel.IsEditDialog, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <!-- Plan Name -->
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontWeight="Medium"
+                            Text="{lex:Loc DashboardPlanNameLabel}" />
+                        <TextBox
+                            x:Name="EditPlanNameTextBox"
+                            Margin="0,0,0,16"
+                            Text="{Binding ViewModel.EditPlanName, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <!-- Plan Description -->
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontWeight="Medium"
+                            Text="{lex:Loc DashboardPlanDescriptionLabel}" />
+                        <TextBox
+                            Margin="0,0,0,16"
+                            Height="64"
+                            AcceptsReturn="True"
+                            Text="{Binding ViewModel.EditPlanDescription, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" />
+
+                        <!-- Quick Link: Open in Windows Settings -->
+                        <ui:Button
+                            Margin="0,0,0,16"
+                            Appearance="Secondary"
+                            Command="{Binding ViewModel.OpenWindowsEditPlanCommand}"
+                            CommandParameter="{Binding ViewModel.EditingPlan}"
+                            Icon="{ui:SymbolIcon Open24}"
+                            Content="{lex:Loc DashboardOpenWindowsEdit}" />
+
+                        <!-- Error Message -->
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="12"
+                            Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                            Text="{Binding ViewModel.EditErrorMessage}"
+                            Visibility="{Binding ViewModel.HasEditError, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        <!-- Active Plan Delete Disabled Note -->
+                        <StackPanel
+                            Margin="0,0,0,12"
+                            Orientation="Horizontal"
+                            Visibility="{Binding ViewModel.CanDeleteEditingPlan, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                            <ui:SymbolIcon
+                                Margin="0,0,6,0"
+                                FontSize="14"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Symbol="Info24" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{lex:Loc DashboardDeleteDisabledTooltip}" />
+                        </StackPanel>
+
+                        <!-- Action Buttons -->
+                        <Grid Margin="0,8,0,0">
+                            <!-- Left: Delete Button (inactivated for active plan, enabled for inactive plan) -->
+                            <ui:Button
+                                HorizontalAlignment="Left"
+                                Appearance="Danger"
+                                Command="{Binding ViewModel.DeleteCurrentEditingPlanCommand}"
+                                Icon="{ui:SymbolIcon Delete24}"
+                                Content="{lex:Loc DashboardDeleteButton}"
+                                IsEnabled="{Binding ViewModel.CanDeleteEditingPlan}"
+                                ToolTipService.ShowOnDisabled="True"
+                                ToolTipService.InitialShowDelay="50">
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                        <Setter Property="ToolTip" Value="{lex:Loc DashboardDeleteButton}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ViewModel.CanDeleteEditingPlan}" Value="False">
+                                                <Setter Property="ToolTip" Value="{lex:Loc DashboardDeleteDisabledTooltip}" />
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
+
+                            <!-- Right: Cancel and Save Buttons -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <ui:Button
+                                    Margin="0,0,8,0"
+                                    Appearance="Secondary"
+                                    Command="{Binding ViewModel.CloseDialogCommand}"
+                                    Content="{lex:Loc DashboardCancelButton}" />
+                                <ui:Button
+                                    Appearance="Primary"
+                                    Command="{Binding ViewModel.SubmitEditPlanCommand}"
+                                    Content="{lex:Loc DashboardSaveButton}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Delete Plan Dialog Content -->
+                    <StackPanel Visibility="{Binding ViewModel.IsDeleteDialog, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid Margin="0,4,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Warning Icon Badge -->
+                            <Border
+                                Grid.Column="0"
+                                Width="44"
+                                Height="44"
+                                Margin="0,0,16,0"
+                                VerticalAlignment="Top"
+                                Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                CornerRadius="22">
+                                <ui:SymbolIcon
+                                    FontSize="22"
+                                    Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                                    Symbol="Warning24" />
+                            </Border>
+
+                            <!-- Message and CheckBox aligned together -->
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock
+                                    FontSize="14"
+                                    FontWeight="Normal"
+                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                    LineHeight="20"
+                                    Text="{Binding ViewModel.DeleteMessage}"
+                                    TextWrapping="Wrap" />
+
+                                <!-- Do Not Ask Again CheckBox -->
+                                <CheckBox
+                                    Margin="0,16,0,0"
+                                    Content="{lex:Loc DashboardDoNotAskAgain}"
+                                    IsChecked="{Binding ViewModel.DoNotAskAgainDelete, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <ui:Button
+                                Margin="0,0,8,0"
+                                Appearance="Secondary"
+                                Command="{Binding ViewModel.CloseDialogCommand}"
+                                Content="{lex:Loc DashboardCancelButton}" />
+                            <ui:Button
+                                Appearance="Danger"
+                                Command="{Binding ViewModel.ConfirmDeletePlanCommand}"
+                                Icon="{ui:SymbolIcon Delete24}"
+                                Content="{lex:Loc DashboardDeleteButton}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
